@@ -12,7 +12,6 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -25,20 +24,15 @@ public class ExampleTest {
     static String newIssuePath;
     static String downloadFilepath;
     static String fileName2;
-    static String fileName = "C:\\projects\\com.example\\HelloMaven2\\FilesForTests\\forTest.jpg";
+    static String fileName = "forTest.jpg";
 
 
 
-    public static void loginPass() throws InterruptedException {
-//        System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
-//        Thread.sleep(3000);
+    public static void loginPass() {
+
         browser.get("http://jira.hillel.it:8080");
         findAndFill(By.cssSelector("#login-form-username"), "autorob");
         findAndFill(By.cssSelector("#login-form-password"), "forautotests\n");
-//        findAndFill(By.cssSelector("#login-form-password"), "forautotests");
-//        browser.findElement(By.cssSelector("[id=\"login\"]")).click();
-//        Thread.sleep(1000);
-
     }
 
     public static WebElement findAndFill(By selector, String value) {
@@ -98,24 +92,23 @@ public class ExampleTest {
 
 
 
-//    @Test
-//    public static void loginFailed () throws InterruptedException {
-//        loginPass();
-//        Assert.assertTrue(browser.findElements(By.cssSelector("div#usernameerror")).size() > 0);
-//
-//    }
+    @Test (priority = -1)
+    public static void loginFailed () throws InterruptedException {
+        loginPass();
+        Assert.assertFalse(browser.findElements(By.cssSelector("div#usernameerror")).size() > 0);
+
+    }
 
     @Test (priority = 1)
     public static void testLogin() throws InterruptedException {
-        loginPass();
-//        browser.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+//        loginPass();
         Assert.assertTrue(browser.findElements(By.cssSelector("a[href=\"/secure/CreateIssue!default.jspa\"]")).size() > 0);
     }
 
     @Test (priority = 2)
 
     public static void testCreateTask() throws InterruptedException {
-        loginPass();
+//        loginPass();
         Thread.sleep(4000);
         browser.findElement(By.cssSelector("a[href=\"/secure/CreateIssue!default.jspa\"]")).click();
         findAndFill(By.cssSelector(".jira-dialog-content #summary"), nameTask);
@@ -123,70 +116,59 @@ public class ExampleTest {
         numberTask = browser.findElement(By.cssSelector(".issue-created-key")).getAttribute("data-issue-key");
         List<WebElement> linkNewIssues = browser.findElements(By.cssSelector("a.issue-created-key"));
         newIssuePath = linkNewIssues.get(0).getAttribute("href");
-//        List<WebElement> linkNewIssues = browser.findElements(By.cssSelector("a.issue-created-key"));
-
-//        Assert.assertTrue(linkNewIssues.size() != 0);
 
         Assert.assertTrue(browser.findElements(By.cssSelector(".aui-message-success")).size() > 0&& linkNewIssues.size()!=0);
-//        newIssuePath = linkNewIssues.get(0).getAttribute("href");
     }
 
     @Test (priority = 3)
 
     public static void testOpenTask() throws InterruptedException {
-        loginPass();
-        Thread.sleep(5000);
-
-        createTask();
+//        loginPass();
+//        Thread.sleep(5000);
+//
+//        createTask();
         Thread.sleep(5000);
 
         browser.get(newIssuePath);
         Thread.sleep(3000);
         Assert.assertTrue(browser.findElement(By.cssSelector("#summary-val")).getText().contains(nameTask));
 
-
     }
-
 
 
     @Test (priority = 4)
 
     public static void uploadAttach () throws InterruptedException {
 
-        loginPass();
-        Thread.sleep(5000);
-
-        createTask();
-        Thread.sleep(5000);
-
-        browser.get(newIssuePath);
+//        loginPass();
+//        Thread.sleep(5000);
+//
+//        createTask();
+//        Thread.sleep(5000);
+//
+//        browser.get(newIssuePath);
         Thread.sleep(3000);
 
-        browser.findElement(By.cssSelector("input.issue-drop-zone__file")).sendKeys(fileName);
+        browser.findElement(By.cssSelector("input.issue-drop-zone__file")).sendKeys(downloadFilepath+"\\"+fileName);
         Thread.sleep(4000);
         Assert.assertTrue(browser.findElements(By.cssSelector("div.attachment-thumb")).size() > 0);
-
-
     }
 
     @Test(priority = 5)
     public static void downloadAttach () throws InterruptedException {
-        uploadAttach();
+//        uploadAttach();
 
         browser.findElement(By.cssSelector("div.attachment-thumb")).click();
         Thread.sleep(2000);
         browser.findElement(By.cssSelector("#cp-control-panel-download")).click();
+        Thread.sleep(2000);
         String fileTitle = browser.findElement(By.cssSelector(".attachment-title")).getAttribute("title");
         browser.findElement(By.cssSelector("#cp-control-panel-close")).click();
         Thread.sleep(2000);
 
         fileName2 = downloadFilepath + "\\"+ fileTitle;
+        Assert.assertTrue(fileName2.contains(fileName));
 
-        browser.findElement(By.cssSelector("input.issue-drop-zone__file")).sendKeys(fileName2);
-//        browser.findElement(By.cssSelector("input.issue-drop-zone__file")).sendKeys(downloadFilepath + "\\" + fileTitle);
-//        proverka  - naiti papku zagruzki i priverit nalichie faila s nazvaniem c caita
-
-//Assert.assertTrue(browser.findElement(By.cssSelector(".attachment-title")).getAttribute("title").contains(fileName));
 
     }
 
