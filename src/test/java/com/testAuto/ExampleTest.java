@@ -19,6 +19,8 @@ import java.util.concurrent.TimeUnit;
 public class ExampleTest {
 
     private static WebDriver browser;
+    static Code c;
+
     static String nameTask = "Check create process";
     static String numberTask;
     static String newIssuePath;
@@ -31,40 +33,9 @@ public class ExampleTest {
     public static void loginPass() {
 
         browser.get("http://jira.hillel.it:8080");
-        findAndFill(By.cssSelector("#login-form-username"), "autorob");
-        findAndFill(By.cssSelector("#login-form-password"), "forautotests\n");
+        c.findAndFill(By.cssSelector("#login-form-username"), "autorob");
+        c.findAndFill(By.cssSelector("#login-form-password"), "forautotests\n");
     }
-
-    public static WebElement findAndFill(By selector, String value) {
-        WebElement element = browser.findElement(selector);
-        element.sendKeys(value);
-        return element;
-    }
-
-    public static void createTask() throws InterruptedException {
-        Thread.sleep(4000);
-        browser.findElement(By.cssSelector("a[href=\"/secure/CreateIssue!default.jspa\"]")).click();
-        findAndFill(By.cssSelector(".jira-dialog-content #summary"), nameTask);
-        browser.findElement(By.cssSelector(".jira-dialog-content #create-issue-submit")).click();
-        numberTask = browser.findElement(By.cssSelector(".issue-created-key")).getAttribute("data-issue-key");
-        List<WebElement> linkNewIssues = browser.findElements(By.cssSelector("a.issue-created-key"));
-        newIssuePath = linkNewIssues.get(0).getAttribute("href");
-
-
-    }
-
-    public static void openTask() throws InterruptedException {
-        Thread.sleep(3000);
-        findAndFill(By.cssSelector("#quickSearchInput"), numberTask);
-        Thread.sleep(3000);
-
-        browser.findElements(By.cssSelector(".quick-search-view-all")).get(0).click();
-        Thread.sleep(3000);
-
-        browser.findElement(By.cssSelector(".summary .issue-link")).click();
-    }
-
-
 
 
     @BeforeTest
@@ -73,7 +44,6 @@ public class ExampleTest {
         System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
 
         downloadFilepath = System.getProperty("user.dir") + "\\downloaded";
-//        "C:\\projects\\com.example\\HelloMaven2\\downloaded";
         HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
         chromePrefs.put("profile.default_content_settings.popups", 0);
         chromePrefs.put("download.default_directory", downloadFilepath);
@@ -84,7 +54,8 @@ public class ExampleTest {
         cap.setCapability(ChromeOptions.CAPABILITY, options);
         browser = new ChromeDriver(cap);
 
-//        browser = new ChromeDriver();
+        c = new Code(browser);
+
         browser.manage().window().maximize();
         browser.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
     }
@@ -93,44 +64,38 @@ public class ExampleTest {
 
 
     @Test (priority = -1)
-    public static void loginFailed () throws InterruptedException {
+    public static void loginFailed ()  {
         loginPass();
         Assert.assertFalse(browser.findElements(By.cssSelector("div#usernameerror")).size() > 0);
 
     }
 
     @Test (priority = 1)
-    public static void testLogin() throws InterruptedException {
-//        loginPass();
+    public static void testLogin()  {
+
         Assert.assertTrue(browser.findElements(By.cssSelector("a[href=\"/secure/CreateIssue!default.jspa\"]")).size() > 0);
     }
 
     @Test (priority = 2)
 
-    public static void testCreateTask() throws InterruptedException {
-//        loginPass();
-        Thread.sleep(4000);
+    public static void testCreateTask() {
+
         browser.findElement(By.cssSelector("a[href=\"/secure/CreateIssue!default.jspa\"]")).click();
-        findAndFill(By.cssSelector(".jira-dialog-content #summary"), nameTask);
+        c.findAndFill(By.cssSelector(".jira-dialog-content #summary"), nameTask);
         browser.findElement(By.cssSelector(".jira-dialog-content #create-issue-submit")).click();
         numberTask = browser.findElement(By.cssSelector(".issue-created-key")).getAttribute("data-issue-key");
         List<WebElement> linkNewIssues = browser.findElements(By.cssSelector("a.issue-created-key"));
         newIssuePath = linkNewIssues.get(0).getAttribute("href");
 
-        Assert.assertTrue(browser.findElements(By.cssSelector(".aui-message-success")).size() > 0&& linkNewIssues.size()!=0);
+        Assert.assertTrue(browser.findElements(By.cssSelector(".aui-message-success")).size() > 0&&
+                linkNewIssues.size()!=0);
     }
 
     @Test (priority = 3)
 
-    public static void testOpenTask() throws InterruptedException {
-//        loginPass();
-//        Thread.sleep(5000);
-//
-//        createTask();
-        Thread.sleep(5000);
+    public static void testOpenTask() {
 
         browser.get(newIssuePath);
-        Thread.sleep(3000);
         Assert.assertTrue(browser.findElement(By.cssSelector("#summary-val")).getText().contains(nameTask));
 
     }
@@ -140,15 +105,6 @@ public class ExampleTest {
 
     public static void uploadAttach () throws InterruptedException {
 
-//        loginPass();
-//        Thread.sleep(5000);
-//
-//        createTask();
-//        Thread.sleep(5000);
-//
-//        browser.get(newIssuePath);
-        Thread.sleep(3000);
-
         browser.findElement(By.cssSelector("input.issue-drop-zone__file")).sendKeys(downloadFilepath+"\\"+fileName);
         Thread.sleep(4000);
         Assert.assertTrue(browser.findElements(By.cssSelector("div.attachment-thumb")).size() > 0);
@@ -156,12 +112,10 @@ public class ExampleTest {
 
     @Test(priority = 5)
     public static void downloadAttach () throws InterruptedException {
-//        uploadAttach();
 
         browser.findElement(By.cssSelector("div.attachment-thumb")).click();
         Thread.sleep(2000);
         browser.findElement(By.cssSelector("#cp-control-panel-download")).click();
-        Thread.sleep(2000);
         String fileTitle = browser.findElement(By.cssSelector(".attachment-title")).getAttribute("title");
         browser.findElement(By.cssSelector("#cp-control-panel-close")).click();
         Thread.sleep(2000);
@@ -176,52 +130,5 @@ public class ExampleTest {
     public static void closeBrowser(){
         browser.quit();
     }
-
-
-
-
-
-
-
-
-////variant robert
-//    @Test
-//    public static void createIssue() throws InterruptedException {
-//        browser.findElement(By.cssSelector("a#create_link")).click();
-//        Thread.sleep(8000);
-////        findAndFill(By.cssSelector("input#project-field"), "General Robert QA (GQR)").click();
-////        Thread.sleep(5000);
-//
-//        findAndFill(By.cssSelector("input#summary"), nameTask).submit(); // Add current timestamp to the Summary
-//        Thread.sleep(3000);
-//        linkNewIssues = browser.findElements(By.cssSelector("a.issue-created-key"));
-//
-//        if (linkNewIssues.size() != 0) {
-//            System.out.println("Create Issue Passed");
-//            newIssuePath = linkNewIssues.get(0).getAttribute("href");
-//        } else {
-//            System.out.println("Create Issue Failed");
-//        }
-//
-////        newIssuePath = linkNewIssues.get(0).getAttribute("href");
-//    }
-//    @Test
-//    public static void openIssue() throws InterruptedException {
-//        openBrowser();
-//        loginPass();
-//        Thread.sleep(3000);
-//
-//        browser.get(newIssuePath);
-//
-//        if (browser.getTitle().contains(nameTask)) {
-//            System.out.println("Open Issue Passed");
-//        } else {
-//            System.out.println("Open Issue Failed");
-//        }
-//    }
-////    newIssuePath  не перезаписывается
-////    end
-
-
 
 }
