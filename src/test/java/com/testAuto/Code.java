@@ -3,19 +3,9 @@ package com.testAuto;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
-
-import static com.testAuto.ExampleTest.downloadFilepath;
 
 public class Code {
     public WebDriver browser;
@@ -37,7 +27,7 @@ public class Code {
     }
 
     public void adminUserCreate() throws InterruptedException {
-        Thread.sleep(2000);
+        Thread.sleep(1500);
         browser.findElement(By.cssSelector(".aui-nav #system-admin-menu")).click();
         browser.findElement(By.cssSelector("#admin_users_menu")).click();
         browser.findElement(By.cssSelector("input#login-form-authenticatePassword")).sendKeys("forautotests\n");

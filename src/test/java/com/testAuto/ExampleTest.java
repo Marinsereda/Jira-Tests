@@ -23,32 +23,31 @@ public class ExampleTest extends TestBase{
 
 
 
-    public static void loginPass(boolean correctPass) {
+    public static void loginPass(boolean correctPass) throws InterruptedException {
         String pass = (correctPass? TestData.password: TestData.passwordWrong)+ "\n";
 
         browser.get(TestData.siteLink);
         c.findAndFill(By.cssSelector("#login-form-username"), TestData.login);
+        Thread.sleep(500);
         c.findAndFill(By.cssSelector("#login-form-password"), pass );
     }
 
 
-//    @Test(priority = -1)
-//    public static void loginFailed ()  {
-//        loginPass(false);
-//        Assert.assertTrue(browser.findElements(By.cssSelector("div#usernameerror")).size() > 0);
-//
-//        List<WebElement> buttonProfile = browser.findElements(By.cssSelector("a#header-details-user-fullname"));
-//        Assert.assertFalse(
-//                buttonProfile.size() > 0 && buttonProfile.get(0).getAttribute("data-username").equals("autorob"));
-//
-//    }
+    @Test(priority = -1)
+    public static void loginFailed () throws InterruptedException {
+        loginPass(false);
+        Assert.assertTrue(browser.findElements(By.cssSelector("div#usernameerror")).size() > 0);
+
+        List<WebElement> buttonProfile = browser.findElements(By.cssSelector("a#header-details-user-fullname"));
+        Assert.assertFalse(
+                buttonProfile.size() > 0 && buttonProfile.get(0).getAttribute("data-username").equals("autorob"));
+
+    }
 
     @Test
     public static void testLogin() throws InterruptedException {
-        Thread.sleep(2500);
 
         loginPass(true);
-        Thread.sleep(2000);
         Assert.assertTrue(browser.findElements(By.cssSelector("#header-details-user-fullname")).size() > 0);
     }
 
@@ -82,7 +81,7 @@ public class ExampleTest extends TestBase{
     public static void uploadAttach() throws InterruptedException {
 
         browser.findElement(By.cssSelector("input.issue-drop-zone__file")).sendKeys(TestData.uploadFolder + "\\" + TestData.fileName);
-Thread.sleep(3000);
+        Thread.sleep(3000);
         uploadFileHref = browser.findElement(By.cssSelector(".attachment-title")).getAttribute("href");
         fileTitle= browser.findElement(By.cssSelector(".attachment-title")).getAttribute("title");
 
