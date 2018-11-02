@@ -30,7 +30,7 @@ public class ExampleTest extends TestBase{
 //        c.findAndFill(By.cssSelector("#login-form-username"), TestData.login);
 //        Thread.sleep(500);
 //        c.findAndFill(By.cssSelector("#login-form-password"), pass );
-//    }
+//    } - added to FunctionJira.java
 
 
     @Test(priority = -1)
@@ -55,9 +55,12 @@ public class ExampleTest extends TestBase{
 
     public static void testCreateTask() {
 
-        browser.findElement(By.cssSelector("a[href=\"/secure/CreateIssue!default.jspa\"]")).click();
-        c.findAndFill(By.cssSelector(".jira-dialog-content #summary"), TestData.nameTask);
-        browser.findElement(By.cssSelector(".jira-dialog-content #create-issue-submit")).click();
+//        browser.findElement(By.cssSelector("a[href=\"/secure/CreateIssue!default.jspa\"]")).click();
+//        c.findAndFill(By.cssSelector(".jira-dialog-content #summary"), TestData.nameTask);
+//        browser.findElement(By.cssSelector(".jira-dialog-content #create-issue-submit")).click();
+
+        FunctionJira.createTask();
+        
         numberTask = browser.findElement(By.cssSelector(".issue-created-key")).getAttribute("data-issue-key");
         List<WebElement> linkNewIssues = browser.findElements(By.cssSelector("a.issue-created-key"));
         newIssuePath = linkNewIssues.get(0).getAttribute("href");

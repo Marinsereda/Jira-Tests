@@ -13,6 +13,14 @@ public class FunctionJira extends TestBase{
     }
 
 
+    public static void createTask() {
+
+        browser.findElement(By.cssSelector("a[href=\"/secure/CreateIssue!default.jspa\"]")).click();
+        c.findAndFill(By.cssSelector(".jira-dialog-content #summary"), TestData.nameTask);
+        browser.findElement(By.cssSelector(".jira-dialog-content #create-issue-submit")).click();
+    }
+
+
 
 
 
