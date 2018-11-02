@@ -23,19 +23,19 @@ public class ExampleTest extends TestBase{
 
 
 
-    public static void loginPass(boolean correctPass) throws InterruptedException {
-        String pass = (correctPass? TestData.password: TestData.passwordWrong)+ "\n";
-
-        browser.get(TestData.siteLink);
-        c.findAndFill(By.cssSelector("#login-form-username"), TestData.login);
-        Thread.sleep(500);
-        c.findAndFill(By.cssSelector("#login-form-password"), pass );
-    }
+//    public static void loginPass(boolean correctPass) throws InterruptedException {
+//        String pass = (correctPass? TestData.password: TestData.passwordWrong)+ "\n";
+//
+//        browser.get(TestData.siteLink);
+//        c.findAndFill(By.cssSelector("#login-form-username"), TestData.login);
+//        Thread.sleep(500);
+//        c.findAndFill(By.cssSelector("#login-form-password"), pass );
+//    }
 
 
     @Test(priority = -1)
     public static void loginFailed () throws InterruptedException {
-        loginPass(false);
+        FunctionJira.loginPass(false);
         Assert.assertTrue(browser.findElements(By.cssSelector("div#usernameerror")).size() > 0);
 
         List<WebElement> buttonProfile = browser.findElements(By.cssSelector("a#header-details-user-fullname"));
@@ -47,7 +47,7 @@ public class ExampleTest extends TestBase{
     @Test
     public static void testLogin() throws InterruptedException {
 
-        loginPass(true);
+        FunctionJira.loginPass(true);
         Assert.assertTrue(browser.findElements(By.cssSelector("#header-details-user-fullname")).size() > 0);
     }
 

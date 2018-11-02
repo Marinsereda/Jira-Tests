@@ -5,6 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.io.File;
 
 
 public class App {
@@ -38,6 +39,20 @@ public class App {
 
 
     public static void main(String[] args) {
+        File f = new File ("C:\\projects\\com.example\\HelloMaven2\\FilesForTests\\forTest.jpg");
+        File f2 = new File ("C:\\projects\\com.example\\HelloMaven2\\downloaded\\forTest (1).jpg");
+        System.out.println(f.getName() + " " + f.hashCode());
+        System.out.println(f2.getName() + " " + f2.hashCode());
+        if (f.hashCode()==f2.hashCode()){
+            System.out.println("It's the same file");
+        }
+        else {
+            System.out.println("It's different file");
+        }
+
+        System.out.println(f2.exists());
+
+
 
     }
 }
