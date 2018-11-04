@@ -2,35 +2,22 @@ package com.testAuto;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.List;
 
 public class ExampleTest extends TestBase{
 
-//    public static WebDriver browser;
-//    static Code c;
-
-    static String numberTask;
-    static String newIssuePath;
-    static String uploadFileHref;
-    static String  fileTitle;
-    static File f;
-    static String fileDownloadPAth;
-
-
-
-
-//    public static void loginPass(boolean correctPass) throws InterruptedException {
-//        String pass = (correctPass? TestData.password: TestData.passwordWrong)+ "\n";
-//
-//        browser.get(TestData.siteLink);
-//        c.findAndFill(By.cssSelector("#login-form-username"), TestData.login);
-//        Thread.sleep(500);
-//        c.findAndFill(By.cssSelector("#login-form-password"), pass );
-//    } - added to FunctionJira.java
+//    static String numberTask;
+//    static String newIssuePath;
+//    static String uploadFileHref;
+//    static String  fileTitle;
+//    static File f;
+//    static String fileDownloadPAth;
 
 
     @Test(priority = -1)
@@ -51,29 +38,27 @@ public class ExampleTest extends TestBase{
         Assert.assertTrue(browser.findElements(By.cssSelector("#header-details-user-fullname")).size() > 0);
     }
 
-    @Test(dependsOnMethods = "testLogin")
+    @Test(dependsOnMethods = "testLogin",priority = 3)
 
-    public static void testCreateTask() {
+    public static void testCreateTask() throws InterruptedException {
 
-//        browser.findElement(By.cssSelector("a[href=\"/secure/CreateIssue!default.jspa\"]")).click();
-//        c.findAndFill(By.cssSelector(".jira-dialog-content #summary"), TestData.nameTask);
-//        browser.findElement(By.cssSelector(".jira-dialog-content #create-issue-submit")).click();
+        Thread.sleep(3000);
 
         FunctionJira.createTask();
-        
-        numberTask = browser.findElement(By.cssSelector(".issue-created-key")).getAttribute("data-issue-key");
-        List<WebElement> linkNewIssues = browser.findElements(By.cssSelector("a.issue-created-key"));
-        newIssuePath = linkNewIssues.get(0).getAttribute("href");
+
+//        numberTask = browser.findElement(By.cssSelector(".issue-created-key")).getAttribute("data-issue-key");
+//        List<WebElement> linkNewIssues = browser.findElements(By.cssSelector("a.issue-created-key"));
+//        newIssuePath = linkNewIssues.get(0).getAttribute("href");
 
         Assert.assertTrue(browser.findElements(By.cssSelector(".aui-message-success")).size() > 0 &&
-                linkNewIssues.size() != 0);
+                FunctionJira.linkNewIssues.size() != 0);
     }
 
     @Test(dependsOnMethods = "testCreateTask")
 
     public static void testOpenTask() {
 
-        browser.get(newIssuePath);
+        browser.get(FunctionJira.newIssuePath);
         Assert.assertTrue(browser.findElement(By.cssSelector("#summary-val")).getText().contains(TestData.nameTask));
 
     }
@@ -83,12 +68,12 @@ public class ExampleTest extends TestBase{
 
     public static void uploadAttach() throws InterruptedException {
 
-        browser.findElement(By.cssSelector("input.issue-drop-zone__file")).sendKeys(TestData.uploadFolder + "\\" + TestData.fileName);
+        FunctionJira.uploadAttach();
         Thread.sleep(3000);
-        uploadFileHref = browser.findElement(By.cssSelector(".attachment-title")).getAttribute("href");
-        fileTitle= browser.findElement(By.cssSelector(".attachment-title")).getAttribute("title");
+//        uploadFileHref = browser.findElement(By.cssSelector(".attachment-title")).getAttribute("href");
+//        fileTitle= browser.findElement(By.cssSelector(".attachment-title")).getAttribute("title");
 
-        System.out.println(uploadFileHref + " " + fileTitle);
+//        System.out.println(uploadFileHref + " " + fileTitle);
 
         Assert.assertTrue(browser.findElements(By.cssSelector("div.attachment-thumb")).size() > 0);
     }
@@ -97,23 +82,25 @@ public class ExampleTest extends TestBase{
 
     public static void downloadAttach() throws InterruptedException {
 
-            browser.get(uploadFileHref);
-            Thread.sleep(2000);
+        FunctionJira.downloadAttach();
 
-            fileTitle = fileTitle.substring(0, fileTitle.indexOf(".zip") + 4);
-            fileDownloadPAth = downloadFilepath + "\\" + fileTitle;
-            f = new File(fileDownloadPAth);
+//            browser.get(FunctionJira.uploadFileHref);
+//            Thread.sleep(2000);
+//
+//            FunctionJira.fileTitle = FunctionJira.fileTitle.substring(0, FunctionJira.fileTitle.indexOf(".zip") + 4);
+//            fileDownloadPAth = downloadFilepath + "\\" + fileTitle;
+//            f = new File(fileDownloadPAth);
 
-            Assert.assertTrue(f.exists());
+            Assert.assertTrue(FunctionJira.f.exists());
         }
 
 
         @Test (dependsOnMethods = "downloadAttach")
 
         public static void deleteTest()  {
-            f.delete();
+            FunctionJira.f.delete();
 
-            Assert.assertFalse(f.exists());
+            Assert.assertFalse(FunctionJira.f.exists());
         }
 
 
