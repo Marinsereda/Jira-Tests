@@ -33,16 +33,16 @@ public class TestBase {
 
         ChromeOptions options = new ChromeOptions();
         options.setExperimentalOption("prefs", chromePrefs);
-        DesiredCapabilities cap = DesiredCapabilities.chrome();
-        cap.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-        cap.setCapability(ChromeOptions.CAPABILITY, options);
-        browser = new ChromeDriver(cap);
+//        DesiredCapabilities cap = DesiredCapabilities.chrome();
+//        cap.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+//        cap.setCapability(ChromeOptions.CAPABILITY, options);
+        browser = new ChromeDriver(options);
 
 
 
         browser.manage().window().maximize();
         browser.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
-        c = new Code(browser);
+//        c = new Code(browser);
     }
 
 
