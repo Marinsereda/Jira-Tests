@@ -1,9 +1,17 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="" verbose="1" >
-    <test name=""   >
-        <packages>
-            <package name="com.testAuto" />
-        </packages>
+<suite name="HelloMaven2" verbose="1" >
+    <test name="JiraTests">
+        <classes>
+            <class name="com.testAuto.ExampleTest">
+                <methods>
+                    <include name="testLogin"></include>
+                    <include name="testCreateTask">
+                        <!--<group name="createTask" depends-on="testLogin"></group>-->
+                    </include>
+                </methods>
+            </class>
+        </classes>
+
     </test>
 </suite>

@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.FluentWait;
 
 import java.io.File;
@@ -28,6 +29,7 @@ public class FunctionJira {
     FunctionJira(WebDriver browser) {
         this.browser = browser;
         this.c = new Code(browser);
+        PageFactory.initElements(browser, this);
     }
 
     By usernameInput = By.cssSelector("#login-form-username");
@@ -104,6 +106,48 @@ public class FunctionJira {
         f = new File(fileDownloadPAth);
 
     }
+
+    public void adminUserCreate() throws InterruptedException {
+        Thread.sleep(1500);
+//        browser.findElement(By.cssSelector(".aui-nav #system-admin-menu")).click();
+//        browser.findElement(By.cssSelector("#admin_users_menu")).click();
+//        browser.findElement(By.cssSelector("input#login-form-authenticatePassword")).sendKeys("forautotests\n");
+//        browser.findElement(By.cssSelector("#create_user")).click();
+//        browser.findElement(By.cssSelector("#user-create-email")).sendKeys(TestData.email);
+//        browser.findElement(By.cssSelector("#user-create-fullname")).sendKeys(TestData.email);
+//        browser.findElement(By.cssSelector("#user-create-username")).sendKeys(TestData.email);
+//        browser.findElement(By.cssSelector("#user-create-submit")).click();
+
+        adminMenu.click();
+        adminUsers.click();
+        adminLog.sendKeys("forautotests\n");
+        createUser.click();
+        userEmail.sendKeys(TestData.email);
+        userFullname.sendKeys(TestData.email);
+        userName.sendKeys(TestData.email);
+        userSubmit.click();
+
+
+    }
+    @FindBy(css=".aui-nav #system-admin-menu")
+    WebElement adminMenu;
+    @FindBy(css="admin_users_menu")
+    WebElement adminUsers;
+     @FindBy(css="input#login-form-authenticatePassword")
+    WebElement adminLog;
+    @FindBy(css="#create_user")
+    WebElement createUser;
+    @FindBy(css="#user-create-email")
+    WebElement userEmail;
+    @FindBy(css="#user-create-fullname")
+    WebElement userFullname;
+    @FindBy(css="#user-create-username")
+    WebElement userName;
+    @FindBy(css="#user-create-submit")
+    WebElement userSubmit;
+
+
+
 
 
 
