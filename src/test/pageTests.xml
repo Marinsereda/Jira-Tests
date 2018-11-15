@@ -1,0 +1,42 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="HelloMaven2" verbose="1" >
+    <test name="PageTests">
+        <!--<classes>-->
+            <!--<class name="com.testAuto.loginTests">-->
+                <!--<methods>-->
+                    <!--<include name="testLogin">-->
+                        <!--&lt;!&ndash;<group name="createTask" depends-on="testLogin"></group>&ndash;&gt;-->
+                    <!--</include>-->
+                <!--</methods>-->
+            <!--</class>-->
+            <!--<class name="com.testAuto.mainTests">-->
+        <!--<methods>-->
+            <!--<include name="testCreateTask">-->
+                <!--&lt;!&ndash;<group name="createTask" depends-on="testLogin"></group>&ndash;&gt;-->
+            <!--</include>-->
+        <!--</methods>-->
+    <!--</class>-->
+            <!--<class name="com.testAuto.issueTests">-->
+
+            <!--</class>-->
+    <!--</classes>-->
+        <!--working xml file-->
+
+        <groups>
+            <run>
+                <include name="login"></include>
+                <include name="createTask"></include>
+
+            </run>
+        </groups>
+        <packages>
+            <package name="com.testAuto">
+                <include name="mainTests">
+                   <group name="createTask" depends-on="login">
+                   </group>
+                </include>
+            </package>
+        </packages>
+    </test>
+</suite>

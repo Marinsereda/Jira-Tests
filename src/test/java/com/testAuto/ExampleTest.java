@@ -98,11 +98,11 @@ public class ExampleTest extends BrowserFactory {
     }
 
     @AfterMethod
-    public static void reportResults(ITestResult iTestResult) {
-        String info = "";
-        info += iTestResult.getMethod().getDescription();
+    public static void reportResults(ITestResult testResult) {
+        String info= "";
+        info += testResult.getMethod().getMethodName();
         info += ": ";
-        info += iTestResult.isSuccess() ? "passed" : "failed";
+        info += testResult.isSuccess() ? "passed" : "failed";
 
         System.out.println(info);
     }
