@@ -35,7 +35,7 @@ public class APIClient
 		{
 			base_url += "/";
 		}
-		
+
 		this.m_url = base_url + "index.php?/api/v2/";
 	}
 
@@ -107,49 +107,49 @@ public class APIClient
 	 * Returns the parsed JSON response as standard object which can
 	 * either be an instance of JSONObject or JSONArray (depending on the
 	 * API method). In most cases, this returns a JSONObject instance which
-	 * is basically the same as java.util.Map.	 
+	 * is basically the same as java.util.Map.
 	 */
 	public Object sendPost(String uri, Object data)
 		throws MalformedURLException, IOException, APIException
 	{
 		return this.sendRequest("POST", uri, data);
 	}
-	
+
 	private Object sendRequest(String method, String uri, Object data)
 		throws MalformedURLException, IOException, APIException
 	{
 		URL url = new URL(this.m_url + uri);
-		
+
 		// Create the connection object and set the required HTTP method
 		// (GET/POST) and headers (content type and basic auth).
 		HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 		conn.addRequestProperty("Content-Type", "application/json");
-		
+
 		String auth = getAuthorization(this.m_user, this.m_password);
 		conn.addRequestProperty("Authorization", "Basic " + auth);
-		
+
 		if (method == "POST")
 		{
 			// Add the POST arguments, if any. We just serialize the passed
 			// data object (i.e. a dictionary) and then add it to the
 			// request body.
 			if (data != null)
-			{				
+			{
 				byte[] block = JSONValue.toJSONString(data).
 					getBytes("UTF-8");
 
-				conn.setDoOutput(true);				
-				OutputStream ostream = conn.getOutputStream();			
+				conn.setDoOutput(true);
+				OutputStream ostream = conn.getOutputStream();
 				ostream.write(block);
 				ostream.flush();
 			}
 		}
-		
+
 		// Execute the actual web request (if it wasn't already initiated
 		// by getOutputStream above) and record any occurred errors (we use
 		// the error stream in this case).
 		int status = conn.getResponseCode();
-		
+
 		InputStream istream;
 		if (status != 200)
 		{
@@ -157,16 +157,16 @@ public class APIClient
 			if (istream == null)
 			{
 				throw new APIException(
-					"TestRail API return HTTP " + status + 
+					"TestRail API return HTTP " + status +
 					" (No additional error message received)"
 				);
 			}
 		}
-		else 
+		else
 		{
 			istream = conn.getInputStream();
 		}
-		
+
 		// Read the response body, if any, and deserialize it from JSON.
 		String text = "";
 		if (istream != null)
@@ -177,27 +177,27 @@ public class APIClient
 					"UTF-8"
 				)
 			);
-		
+
 			String line;
 			while ((line = reader.readLine()) != null)
 			{
 				text += line;
 				text += System.getProperty("line.separator");
 			}
-			
+
 			reader.close();
 		}
-		
+
 		Object result;
 		if (text != "")
 		{
 			result = JSONValue.parse(text);
 		}
-		else 
+		else
 		{
 			result = new JSONObject();
 		}
-		
+
 		// Check for any occurred errors and add additional details to
 		// the exception message, if any (e.g. the error message returned
 		// by TestRail).
@@ -212,19 +212,19 @@ public class APIClient
 					error = '"' + (String) obj.get("error") + '"';
 				}
 			}
-			
+
 			throw new APIException(
 				"TestRail API returned HTTP " + status +
 				"(" + error + ")"
 			);
 		}
-		
+
 		return result;
 	}
-	
+
 	private static String getAuthorization(String user, String password)
 	{
-		try 
+		try
 		{
 			return getBase64((user + ":" + password).getBytes("UTF-8"));
 		}
@@ -232,10 +232,10 @@ public class APIClient
 		{
 			// Not thrown
 		}
-		
+
 		return "";
 	}
-	
+
 	private static String getBase64(byte[] buffer)
 	{
 		final char[] map = {
@@ -247,7 +247,7 @@ public class APIClient
 			'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7',
 			'8', '9', '+', '/'
 		};
-	
+
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < buffer.length; i++)
 		{
@@ -261,7 +261,7 @@ public class APIClient
 				{
 					b2 = buffer[i];
 				}
-				else 
+				else
 				{
 					bytes = 2;
 				}
@@ -270,9 +270,9 @@ public class APIClient
 			{
 				bytes = 1;
 			}
-			
+
 			int total = (b0 << 16) | (b1 << 8) | b2;
-			
+
 			switch (bytes)
 			{
 				case 3:
@@ -281,14 +281,14 @@ public class APIClient
 					sb.append(map[(total >> 6) & 0x3f]);
 					sb.append(map[total & 0x3f]);
 					break;
-					
+
 				case 2:
 					sb.append(map[(total >> 18) & 0x3f]);
 					sb.append(map[(total >> 12) & 0x3f]);
 					sb.append(map[(total >> 6) & 0x3f]);
 					sb.append('=');
 					break;
-					
+
 				case 1:
 					sb.append(map[(total >> 18) & 0x3f]);
 					sb.append(map[(total >> 12) & 0x3f]);
@@ -297,7 +297,7 @@ public class APIClient
 					break;
 			}
 		}
-	
+
 		return sb.toString();
 	}
 }

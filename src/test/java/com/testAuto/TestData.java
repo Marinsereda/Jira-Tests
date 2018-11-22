@@ -9,6 +9,11 @@ public class TestData {
     static String password = "forautotests";
     static String passwordWrong = "forautotests123";
     static String siteLink = "http://jira.hillel.it:8080";
+    static String usernameTrail = "rvalek@intersog.com";
+    static String passwordTrail = "hillel";
+    static String nameRunTrail = "JiraMF";
+
+
 
 
 }

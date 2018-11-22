@@ -1,0 +1,22 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="HelloMaven2" verbose="0"  group-by-instances="true">
+    <test name="loginTests" verbose="1" group-by-instances="true">
+        <parameter name="testRailProjectId" value="6"/>
+        <parameter name="testRailRunPrefix" value="JiraMF"/>
+        <groups>
+            <run>
+                <exclude name="disabled"/>
+                <include name="login"/>
+                <include name="TestRailReport"/>
+            </run>
+        </groups>
+        <!--<packages>-->
+            <!--<package name="com.testAuto"/>-->
+        <!--</packages>-->
+        <classes>
+            <class name="com.testAuto.loginTests"></class>
+        </classes>
+
+    </test>
+</suite>
