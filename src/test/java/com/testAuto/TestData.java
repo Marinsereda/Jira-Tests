@@ -1,7 +1,7 @@
 package com.testAuto;
 
 public class TestData {
-    static String nameTask = "Check create process";
+    static String nameIssue = "Check create process";
     static String uploadFolder= "C:\\projects\\com.example\\HelloMaven2\\FilesForTests";
     static String fileName = "ZIP for Test.zip";
     static String email = "seredamv92@gmail.com";

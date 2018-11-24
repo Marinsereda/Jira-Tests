@@ -7,10 +7,10 @@ import org.openqa.selenium.WebElement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Code {
+public class Helper {
     public WebDriver browser;
 
-    Code(WebDriver currentBrowser) {
+    Helper(WebDriver currentBrowser) {
         browser = currentBrowser;
     }
 

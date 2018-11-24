@@ -5,18 +5,23 @@
         <parameter name="testRailProjectId" value="6"/>
         <parameter name="testRailRunPrefix" value="JiraMF"/>
         <groups>
-            <run>
+            <!--<define name="TestRailReport">-->
+            <!--</define>-->
+             <run>
+
                 <exclude name="disabled"/>
-                <include name="login"/>
+                <include name="login">
+
+
+                </include>
                 <include name="TestRailReport"/>
             </run>
         </groups>
-        <!--<packages>-->
-            <!--<package name="com.testAuto"/>-->
-        <!--</packages>-->
-        <classes>
-            <class name="com.testAuto.loginTests"></class>
-        </classes>
+        <packages>
+            <package name="com.testAuto"></package>
+        </packages>
+
+
 
     </test>
 </suite>

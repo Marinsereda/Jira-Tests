@@ -8,11 +8,9 @@ import org.openqa.selenium.support.ui.FluentWait;
 
 import java.io.File;
 import java.time.Duration;
-import java.util.List;
 
 public class IssuePage {
     private WebDriver browser;
-    private  Code c;
 
     static String uploadFileHref;
     static String  fileTitle;
@@ -22,7 +20,6 @@ public class IssuePage {
 
     IssuePage(WebDriver browser) {
         this.browser = browser;
-        this.c = new Code(browser);
         PageFactory.initElements(browser, this);
     }
     @FindBy(css = "input.issue-drop-zone__file")

@@ -15,6 +15,7 @@ public class Testrail {
      private APIClient client;
      private Long runID;
      private String idRun;
+     private Integer runID1;
 
      public Testrail(String baseUrl){
          client = new APIClient(baseUrl);
@@ -25,7 +26,13 @@ public class Testrail {
          client.setPassword(password);
      }
 
-    Integer runID1;
+    public void addCases(Integer sectionID, String nameCase) throws IOException, APIException {
+        HashMap <String, String> dataCase = new HashMap<>();
+        dataCase.put("title", nameCase);
+         JSONObject c = (JSONObject) client.sendPost(String.format("add_case/1"), dataCase);
+//         JSONObject c = (JSONObject) client.sendPost(String.format("add_case/id", sectionID), dataCase);
+
+    }
 
      public void addRun (String runName, Integer projectID) throws IOException, APIException {
          HashMap <String, String> data = new HashMap<>();
@@ -33,7 +40,7 @@ public class Testrail {
 //         JSONObject r = (JSONObject) client.sendPost(String.format("add_run/id", projectID), data);
          JSONObject r = (JSONObject) client.sendPost( "add_run/6" , data);
          this.runID = (long) r.get("id");
-         runID1= (Integer) r.get("id");
+//         runID1= (Integer) r.get("id");
 
          System.out.println(this.runID);
      }
@@ -48,19 +55,8 @@ public class Testrail {
          client.sendPost(String.format("close_run/id", this.runID), new HashMap<>());
      }
 
-Object caseID;
-
-     public void addCases(Integer projectID, String nameCase) throws IOException, APIException {
-         HashMap <String, String> dataCase = new HashMap<>();
-         dataCase.put("title", nameCase);
-//         JSONObject c = (JSONObject) client.sendPost(String.format("add_case/id", projectID), dataCase);
-         JSONObject c = (JSONObject) client.sendPost( "add_case/15", dataCase);
-//         JSONObject c = (JSONObject) client.sendPost("add_case/15", dataCase);
-//         caseID=c.get("id");
-//         System.out.println(Integer.parseInt((String) caseID));
 
 
-     }
 
      public void setResults (Integer caseID, Integer testResult) throws IOException, APIException {
          HashMap <String, Integer> data = new HashMap<>();
@@ -97,9 +93,8 @@ Object caseID;
 
          System.out.println(objResult);
 
-         JSONObject c = (JSONObject) client.sendPost(String.format("add_results_for_cases/128"),objResult);
+         JSONObject c = (JSONObject) client.sendPost(String.format("add_results_for_cases/136"),objResult);
 //         JSONObject c = (JSONObject) client.sendPost(String.format("add_results_for_cases/id", this.runID),objMain);
-
 
          if (c.get("id") == null)
              throw new APIException("No such test case!");

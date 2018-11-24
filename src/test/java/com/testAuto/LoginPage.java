@@ -2,17 +2,15 @@ package com.testAuto;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class LoginPage  {
     private WebDriver browser;
-    private  Code c;
+    private Helper helper;
 
     LoginPage(WebDriver browser) {
         this.browser = browser;
-        this.c = new Code(browser);
+        this.helper = new Helper(browser);
         PageFactory.initElements(browser, this);
     }
 
@@ -25,17 +23,9 @@ public class LoginPage  {
         String pass = (correctPass? TestData.password: TestData.passwordWrong)+ "\n";
 
         browser.get(TestData.siteLink);
-        c.findAndFill(usernameInput, TestData.login);
+        helper.findAndFill(usernameInput, TestData.login);
         Thread.sleep(500);
-        c.findAndFill(passwordInput, pass );
+        helper.findAndFill(passwordInput, pass );
     }
-
-
-
-
-
-
-
-
 
 }

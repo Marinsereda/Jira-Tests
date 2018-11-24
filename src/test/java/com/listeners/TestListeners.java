@@ -42,7 +42,7 @@ public class TestListeners implements ITestListener {
 //        trReport.setCreds(username, password);
 //
 //        try {
-//            trReport.startRun(Integer.parseInt(projectId), runPrefix + " Robert Auto - " + Code.timeStamp());
+//            trReport.startRun(Integer.parseInt(projectId), runPrefix + " Robert Auto - " + Helper.timeStamp());
 //
 //            for (ITestResult result : results) {
 //                String testDescription = result.getMethod().getDescription();

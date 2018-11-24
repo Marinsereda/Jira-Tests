@@ -24,11 +24,11 @@ public class FunctionJira {
     static String fileDownloadPAth;
 
     private  WebDriver browser;
-    private  Code c;
+    private Helper helper;
 
     FunctionJira(WebDriver browser) {
         this.browser = browser;
-        this.c = new Code(browser);
+        this.helper = new Helper(browser);
         PageFactory.initElements(browser, this);
     }
 
@@ -56,10 +56,10 @@ public class FunctionJira {
         String pass = (correctPass? TestData.password: TestData.passwordWrong)+ "\n";
 
         browser.get(TestData.siteLink);
-//        c.findAndFill(By.cssSelector("#login-form-username"), TestData.login);
-        c.findAndFill(usernameInput, TestData.login);
+//        helper.findAndFill(By.cssSelector("#login-form-username"), TestData.login);
+        helper.findAndFill(usernameInput, TestData.login);
         Thread.sleep(500);
-        c.findAndFill(passwordInput, pass );
+        helper.findAndFill(passwordInput, pass );
     }
 
 
@@ -72,7 +72,7 @@ public class FunctionJira {
 //        browser.findElement(By.cssSelector(".jira-dialog-content #create-issue-submit")).click();
 
         createIssueButton.click();
-        c.findAndFill(summaryInput, TestData.nameTask);
+        helper.findAndFill(summaryInput, TestData.nameIssue);
         createSumButton.click();
 
         numberTask = createIssueKey.getAttribute("data-issue-key");
@@ -109,15 +109,6 @@ public class FunctionJira {
 
     public void adminUserCreate() throws InterruptedException {
         Thread.sleep(1500);
-//        browser.findElement(By.cssSelector(".aui-nav #system-admin-menu")).click();
-//        browser.findElement(By.cssSelector("#admin_users_menu")).click();
-//        browser.findElement(By.cssSelector("input#login-form-authenticatePassword")).sendKeys("forautotests\n");
-//        browser.findElement(By.cssSelector("#create_user")).click();
-//        browser.findElement(By.cssSelector("#user-create-email")).sendKeys(TestData.email);
-//        browser.findElement(By.cssSelector("#user-create-fullname")).sendKeys(TestData.email);
-//        browser.findElement(By.cssSelector("#user-create-username")).sendKeys(TestData.email);
-//        browser.findElement(By.cssSelector("#user-create-submit")).click();
-
         adminMenu.click();
         adminUsers.click();
         adminLog.sendKeys("forautotests\n");
@@ -126,7 +117,6 @@ public class FunctionJira {
         userFullname.sendKeys(TestData.email);
         userName.sendKeys(TestData.email);
         userSubmit.click();
-
 
     }
     @FindBy(css=".aui-nav #system-admin-menu")

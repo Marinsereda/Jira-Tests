@@ -5,25 +5,20 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
-import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.Test;
 
-import java.io.File;
 import java.util.List;
 
 public class MainPage {
-    static String numberTask;
+    static String numberIssue;
     static String newIssuePath;
     static List<WebElement> linkNewIssues ;
 
     private WebDriver browser;
-    private  Code c;
+    private Helper helper;
 
     MainPage(WebDriver browser) {
         this.browser = browser;
-        this.c = new Code(browser);
+        this.helper = new Helper(browser);
         PageFactory.initElements(browser, this);
     }
 
@@ -40,8 +35,10 @@ public class MainPage {
 
     @FindBy(css=".aui-nav #system-admin-menu")
     WebElement adminMenu;
-    @FindBy(css="admin_users_menu")
+
+    @FindBy(css="#admin_users_menu")
     WebElement adminUsers;
+
     @FindBy(css="input#login-form-authenticatePassword")
     WebElement adminLog;
     @FindBy(css="#create_user")
@@ -57,14 +54,14 @@ public class MainPage {
 
 
 
-    public  void createTask() {
+    public  void createIssue() {
 
 
         createIssueButton.click();
-        c.findAndFill(summaryInput, TestData.nameTask);
+        helper.findAndFill(summaryInput, TestData.nameIssue);
         createSumButton.click();
 
-        numberTask = createIssueKey.getAttribute("data-issue-key");
+        numberIssue = createIssueKey.getAttribute("data-issue-key");
         linkNewIssues = browser.findElements(By.cssSelector("a.issue-created-key"));
         newIssuePath = linkNewIssues.get(0).getAttribute("href");
 
